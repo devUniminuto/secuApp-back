@@ -8,6 +8,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: true
     },
+    video: {
+      type: Sequelize.STRING,
+      allowNull: true
+    }
   });
 
   return Moves;

@@ -67,7 +67,7 @@ exports.createRooms = (req, res) => {
   res.send({ idRoom: idRoom });
 };
 
-exports.sendNotification = (req, res) => {
+exports.sendNotification = async (req, res) => {
   // Get the file that was set to our field named "image"
   const { image } = req.files;
   
@@ -76,16 +76,63 @@ exports.sendNotification = (req, res) => {
   if (!image) return res.sendStatus(400);
 
   // Move the uploaded image to our upload folder
-  image.mv('/home/junian/programming/universidad/secuApp-back/public/upload/' + image.name);
+  let resolve = require('path').resolve
+  let routePath = resolve('public/upload/'+image.name)
+  console.log(routePath)
+  image.mv(routePath);
   const protocol = req.protocol;
   const host = req.hostname;
   const url = req.originalUrl;
   const PORT = process.env.PORT || 9000;
-  Moves.create({
+  let movement = await Moves.create({
     idRoom: req.body.idRoom,
     image: `${protocol}://${host}:${PORT}/upload/${image.name}`,
   });
-  res.sendStatus(200);
+  //res.sendStatus(200);
+  console.log({ idMovement: movement.id })
+  res.send({ idMovement: movement.id })
+}
+
+exports.sendVideoNotification = async (req, res) => {
+  try {
+
+    // Get the file that was set to our field named "image"
+    const { video } = req.files;
+    
+
+    // If no image submitted, exit
+    if (!video) return res.sendStatus(400);
+
+    // Move the uploaded image to our upload folder
+    let resolve = require('path').resolve
+    let routePath = resolve('public/upload/'+video.name)
+    console.log(routePath)
+    video.mv(routePath);
+    const protocol = req.protocol;
+    const host = req.hostname;
+    const url = req.originalUrl;
+    const PORT = process.env.PORT || 9000;
+    const id = req.body.idMovement;
+
+    const instance = await Moves.findOne({ where: { id }, raw: true });
+    if (instance) {
+      Moves.update(
+        {
+          video: `${protocol}://${host}:${PORT}/upload/${video.name}`,
+        },
+        {
+          where: { id: id },
+        }
+      );
+      return res.sendStatus(200);
+    } else {
+      console.log(
+        "No se encontró la instancia del modelo con el ID especificado."
+      );
+    }
+  } catch (error) {
+    console.log("Ocurrió un error al cambiar y subir el vídeo:", error);
+  }
 }
 
 exports.changeBoolean = (id) => {

@@ -18,6 +18,7 @@ module.exports = function (app) {
   app.put("/api/typesMessages", controller.updateTypesNotifications)
 
   app.post("/api/move", controller.sendNotification)
+  app.post("/api/moveVideo", controller.sendVideoNotification)
 
   //app.post("/api/auth/signin", controller.signin);
 };

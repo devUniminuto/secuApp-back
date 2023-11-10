@@ -87,34 +87,34 @@ module.exports = (io) => {
                 }
               });
             } else if (element.type == "Número") {
-              // let userData = {};
-              // axios
-              //   .post(
-              //     `https://lzyevw.api.infobip.com/sms/2/text/advanced`,
-              //     {
-              //       messages: [
-              //         {
-              //           destinations: [
-              //             {
-              //               to: "57" + element.value,
-              //             },
-              //           ],
-              //           from: "InfoSMS",
-              //           text: "Se ha recibido una actividad sospechosa en unas de sus habitaciones en SecuApp",
-              //         },
-              //       ],
-              //     },
-              //     {
-              //       headers: {
-              //         "Content-Type": "application/json",
-              //         Authorization:
-              //           "615d97e0dd011260faa6e0af3170c290-31ca5039-75ef-4210-9865-cf81eea7d6c8",
-              //       },
-              //     }
-              //   )
-              //   .then(function (response) {
-              //     console.log(response.response.data);
-              //   });
+              let userData = {};
+              axios
+                .post(
+                  `https://lzyevw.api.infobip.com/sms/2/text/advanced`,
+                  {
+                    messages: [
+                      {
+                        destinations: [
+                          {
+                            to: "57" + element.value,
+                          },
+                        ],
+                        from: "InfoSMS",
+                        text: "Se ha recibido una actividad sospechosa en unas de sus habitaciones en SecuApp",
+                      },
+                    ],
+                  },
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization:
+                        "App 615d97e0dd011260faa6e0af3170c290-31ca5039-75ef-4210-9865-cf81eea7d6c8",
+                    },
+                  }
+                )
+                .then(function (response) {
+                  console.log(response.data);
+                });
             }
           });
         }
